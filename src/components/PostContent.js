@@ -15,7 +15,7 @@ const PostContent = ({
   subreddit_name_prefixed,
   num_comments,
   selectPostHandler,
-  subredditChangeHandler
+  subredditHandler
 }) => {
   const isRedditLink = url.indexOf(URL_ROOT) === 0;
   const thumbnailWidth = "70px";
@@ -110,7 +110,7 @@ const PostContent = ({
           to{" "}
           <span
             key="subreddit"
-            onClick={subredditChangeHandler(`/r/${subreddit}`)}
+            onClick={subredditHandler(`/r/${subreddit}`)}
             style={{
               color: "steelblue",
               ...hoverStyle

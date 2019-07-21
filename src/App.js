@@ -34,8 +34,13 @@ const App = () => {
   return render(state, {
     refreshHandler: e => update({ posts: undefined }),
 
-    subredditChangeHandler: subreddit => e =>
-      update({ posts: undefined, subreddit }),
+    subredditHandler: subreddit => e =>
+      update({
+        selectedPostPermalink: undefined,
+        post: undefined,
+        posts: undefined,
+        subreddit
+      }),
 
     voteHandler: id => type => e =>
       setState(currentState => {
@@ -66,14 +71,6 @@ const App = () => {
     selectPostHandler: selectedPostPermalink => e =>
       update({ selectedPostPermalink, post: undefined }),
 
-    subredditSelectFromPostHandler: subreddit => e =>
-      update({
-        selectedPostPermalink: undefined,
-        post: undefined,
-        posts: undefined,
-        subreddit
-      }),
-
     commentHandler: id => ({ text, created_utc }) =>
       setState(currentState => ({
         ...currentState,
@@ -86,10 +83,9 @@ const render = (
   { subreddit, posts, selectedPostPermalink, post, votes, comments },
   {
     refreshHandler,
-    subredditChangeHandler,
+    subredditHandler,
     voteHandler,
     selectPostHandler,
-    subredditSelectFromPostHandler,
     commentHandler
   }
 ) => {
@@ -101,7 +97,7 @@ const render = (
         comments={comments}
         voteHandler={voteHandler}
         backHandler={selectPostHandler(undefined)}
-        subredditHandler={subredditSelectFromPostHandler}
+        subredditHandler={subredditHandler}
         commentHandler={commentHandler}
       />
     );
@@ -113,7 +109,7 @@ const render = (
       posts={posts}
       votes={votes}
       refreshHandler={refreshHandler}
-      subredditChangeHandler={subredditChangeHandler}
+      subredditHandler={subredditHandler}
       voteHandler={voteHandler}
       selectPostHandler={selectPostHandler}
     />

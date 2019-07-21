@@ -53,7 +53,7 @@ const Content = ({
           <PostVotes post={post} votes={votes} voteHandler={voteHandler} />
         </div>
         <div style={{ flexGrow: 1 }}>
-          <PostContent {...post} subredditChangeHandler={subredditHandler} />
+          <PostContent {...post} subredditHandler={subredditHandler} />
         </div>
       </div>
       <br />
@@ -103,6 +103,81 @@ const Comment = ({
     setIsReplying(false);
     commentHandler(id)({ text, created_utc });
   };
+  const elExpandButton = (
+    <button
+      onClick={e => setIsExpanded(!isExpanded)}
+      style={{
+        background: "none",
+        border: "none",
+        outline: "none",
+        padding: 0,
+        cursor: "pointer"
+      }}
+    >
+      {isExpanded ? `[-]` : `[+]`}{" "}
+    </button>
+  );
+  const elAuthorLink = (
+    <a
+      href={`https://reddit.com/user/${author}`}
+      style={{
+        color: "steelblue",
+        textDecoration: "none"
+      }}
+    >
+      <strong>{author}</strong>
+    </a>
+  );
+  const elVoteValue = (
+    <strong>{getVoteValue({ post: { id, ups, downs }, votes })} points</strong>
+  );
+  const elTimestamp = (
+    <span style={{ color: "gray" }}>{timeAgo(created_utc * 1000)}</span>
+  );
+  const elCommentContent = (
+    <div
+      style={{
+        display: "inline-block",
+        verticalAlign: "top",
+        paddingLeft: "0.25rem",
+        width: `calc(100% - ${voterWidth} - 0.25rem)`
+      }}
+      dangerouslySetInnerHTML={{
+        __html: decodeHTMLEntities(body_html)
+      }}
+    />
+  );
+  const elReplyButton = (
+    <button
+      style={{
+        background: "none",
+        border: "none",
+        outline: "none",
+        padding: 0,
+        cursor: "pointer",
+        color: "gray",
+        marginLeft: `calc(${voterWidth} + 0.25rem)`,
+        marginBottom: "0.25rem"
+      }}
+      onClick={e => setIsReplying(true)}
+    >
+      <strong>reply</strong>
+    </button>
+  );
+  const elReplyForm = (
+    <div
+      style={{
+        width: `calc(100% - ${voterWidth} - 0.25rem)`,
+        marginLeft: `calc(${voterWidth} + 0.25rem)`
+      }}
+    >
+      <ReplyForm
+        id={id}
+        saveHandler={commentReplySaveHandler}
+        cancelHandler={e => setIsReplying(false)}
+      />
+    </div>
+  );
 
   return (
     <div
@@ -134,78 +209,18 @@ const Comment = ({
             width: `calc(100% - ${voterWidth} - 0.25rem)`
           }}
         >
-          <button
-            onClick={e => setIsExpanded(!isExpanded)}
-            style={{
-              background: "none",
-              border: "none",
-              outline: "none",
-              padding: 0,
-              cursor: "pointer"
-            }}
-          >
-            {isExpanded ? `[-]` : `[+]`}{" "}
-          </button>
+          {elExpandButton}
           &nbsp;
-          <a
-            href={`https://reddit.com/user/${author}`}
-            style={{
-              color: "steelblue",
-              textDecoration: "none"
-            }}
-          >
-            <strong>{author}</strong>
-          </a>
+          {elAuthorLink}
           &nbsp;
-          <strong>
-            {getVoteValue({ post: { id, ups, downs }, votes })} points
-          </strong>
+          {elVoteValue}
           &nbsp;
-          <span style={{ color: "gray" }}>{timeAgo(created_utc * 1000)}</span>
+          {elTimestamp}
         </div>
         {isExpanded && (
           <>
-            <div
-              style={{
-                display: "inline-block",
-                verticalAlign: "top",
-                paddingLeft: "0.25rem",
-                width: `calc(100% - ${voterWidth} - 0.25rem)`
-              }}
-              dangerouslySetInnerHTML={{
-                __html: decodeHTMLEntities(body_html)
-              }}
-            />
-            {!isReplying ? (
-              <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  outline: "none",
-                  padding: 0,
-                  cursor: "pointer",
-                  color: "gray",
-                  marginLeft: `calc(${voterWidth} + 0.25rem)`,
-                  marginBottom: "0.25rem"
-                }}
-                onClick={e => setIsReplying(true)}
-              >
-                <strong>reply</strong>
-              </button>
-            ) : (
-              <div
-                style={{
-                  width: `calc(100% - ${voterWidth} - 0.25rem)`,
-                  marginLeft: `calc(${voterWidth} + 0.25rem)`
-                }}
-              >
-                <ReplyForm
-                  id={id}
-                  saveHandler={commentReplySaveHandler}
-                  cancelHandler={e => setIsReplying(false)}
-                />
-              </div>
-            )}
+            {elCommentContent}
+            {isReplying ? elReplyForm : elReplyButton}
             {userReplies.map(r => (
               <UserReply
                 key={`user-comment-${r.id}-${r.created_utc}`}

@@ -10,7 +10,7 @@ const ListPage = ({
   posts,
   votes,
   refreshHandler,
-  subredditChangeHandler,
+  subredditHandler,
   voteHandler,
   selectPostHandler
 }) => {
@@ -18,7 +18,7 @@ const ListPage = ({
     <main style={{ padding: "0 0 0.25rem 0.25rem" }}>
       {subreddit !== HOME && (
         <button
-          onClick={subredditChangeHandler(HOME)}
+          onClick={subredditHandler(HOME)}
           style={{ marginRight: "1rem", cursor: "pointer" }}
         >
           {`< Home (r/all)`}
@@ -43,7 +43,7 @@ const ListPage = ({
                   post={p}
                   votes={votes}
                   index={i}
-                  subredditChangeHandler={subredditChangeHandler}
+                  subredditHandler={subredditHandler}
                   voteHandler={voteHandler}
                   selectPostHandler={selectPostHandler}
                 />
@@ -62,7 +62,7 @@ const PostRow = Radium(function PostRow({
   post,
   votes,
   index,
-  subredditChangeHandler,
+  subredditHandler,
   voteHandler,
   selectPostHandler
 }) {
@@ -91,7 +91,7 @@ const PostRow = Radium(function PostRow({
       <td style={tdStyle}>
         <PostContent
           {...post}
-          subredditChangeHandler={subredditChangeHandler}
+          subredditHandler={subredditHandler}
           selectPostHandler={selectPostHandler}
         />
       </td>
