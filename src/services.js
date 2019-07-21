@@ -17,16 +17,10 @@ export const getPostData = async permalink => {
   const [postData, commentData] = await response.json();
   const postFormatter = rawData => rawData.data.children[0].data;
   const commentFormatter = rawData => {
-    const commentContentFormatter = c => {
-      const commentDataWithoutReplies = Object.keys(c.data)
-        .filter(k => k !== "replies")
-        .reduce((acc, k) => ({ ...acc, [k]: c.data[k] }), {});
-
-      return {
-        ...commentDataWithoutReplies,
-        replies: c.data.replies ? commentFormatter(c.data.replies) : []
-      };
-    };
+    const commentContentFormatter = c => ({
+      ...c.data,
+      replies: c.data.replies ? commentFormatter(c.data.replies) : []
+    });
 
     return rawData.data.children.map(commentContentFormatter);
   };
