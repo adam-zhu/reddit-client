@@ -118,7 +118,7 @@ const Comment = ({
       }}
     >
       <div>
-        {isExpanded && votes && voteHandler && (
+        {isExpanded && (
           <CommentVoter
             id={id}
             votes={votes}
@@ -147,25 +147,19 @@ const Comment = ({
             {isExpanded ? `[-]` : `[+]`}{" "}
           </button>
           &nbsp;
-          {author ? (
-            <a
-              href={`https://reddit.com/user/${author}`}
-              style={{
-                color: "steelblue",
-                textDecoration: "none"
-              }}
-            >
-              <strong>{author}</strong>
-            </a>
-          ) : (
-            <strong>USER</strong>
-          )}
+          <a
+            href={`https://reddit.com/user/${author}`}
+            style={{
+              color: "steelblue",
+              textDecoration: "none"
+            }}
+          >
+            <strong>{author}</strong>
+          </a>
           &nbsp;
-          {votes && (
-            <strong>
-              {getVoteValue({ post: { id, ups, downs }, votes })} points
-            </strong>
-          )}
+          <strong>
+            {getVoteValue({ post: { id, ups, downs }, votes })} points
+          </strong>
           &nbsp;
           <span style={{ color: "gray" }}>{timeAgo(created_utc * 1000)}</span>
         </div>
@@ -214,7 +208,7 @@ const Comment = ({
             )}
             {userReplies.map(r => (
               <UserReply
-                key={`user-comment-${r.id}`}
+                key={`user-comment-${r.id}-${r.created_utc}`}
                 {...r}
                 depth={depth + 1}
                 voterWidth={voterWidth}
