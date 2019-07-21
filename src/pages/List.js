@@ -58,14 +58,14 @@ const ListPage = ({
   );
 };
 
-const PostRow = Radium(function PostRow({
+const PostRow = ({
   post,
   votes,
   index,
   subredditHandler,
   voteHandler,
   selectPostHandler
-}) {
+}) => {
   const tdStyle = {
     verticalAlign: "top",
     textAlign: "center",
@@ -97,6 +97,6 @@ const PostRow = Radium(function PostRow({
       </td>
     </tr>
   );
-});
+};
 
 export default ListPage;

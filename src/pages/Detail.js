@@ -91,7 +91,7 @@ const Comment = ({
 
   if (typeof count === "number") {
     return count > 0 ? (
-      <em style={{ color: "gray", fontSize: "0.6rem" }}>
+      <em style={{ display: "block", color: "gray", fontSize: "0.6rem" }}>
         {count} more repl{count === 1 ? "y" : "ies"}
       </em>
     ) : null;
