@@ -33,8 +33,10 @@ const App = () => {
 
   return render(state, {
     refreshHandler: e => update({ posts: undefined }),
+
     subredditChangeHandler: subreddit => e =>
       update({ posts: undefined, subreddit }),
+
     voteHandler: id => type => e =>
       setState(currentState => {
         const previousVote = currentState.votes.find(v => v.id === id);
@@ -60,8 +62,10 @@ const App = () => {
           votes: currentState.votes.concat([{ id, type }])
         };
       }),
+
     selectPostHandler: selectedPostPermalink => e =>
       update({ selectedPostPermalink, post: undefined }),
+
     subredditSelectFromPostHandler: subreddit => e =>
       update({
         selectedPostPermalink: undefined,
@@ -69,6 +73,7 @@ const App = () => {
         posts: undefined,
         subreddit
       }),
+
     commentHandler: id => ({ text, created_utc }) =>
       setState(currentState => ({
         ...currentState,
